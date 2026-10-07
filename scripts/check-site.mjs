@@ -37,8 +37,20 @@ for (const platform of ['mac', 'windows', 'source']) {
     assert(/id="windows-download"[^>]*aria-disabled="true"/.test(html), 'Pending Windows button disabled');
     continue;
   }
-  assert(item.url.startsWith('downloads/'), 'Local preparation downloads use local verified files');
-  const file = path.resolve(site, item.url);
+  let local = item.url;
+  if (item.url.startsWith('https://')) {
+    const release = new URL(item.url);
+    assert.equal(release.origin, 'https://github.com', 'Release uses GitHub');
+    const prefix = `/tomislavrupic/MEGATUBULAS/releases/download/v${manifest.version}/`;
+    assert(release.pathname.startsWith(prefix), 'Release URL has the matching repository/version');
+    const name = decodeURIComponent(release.pathname.slice(prefix.length));
+    assert(name && !name.includes('/'), 'Release asset is a filename');
+    local = `downloads/${name}`;
+  }
+  assert(local.startsWith('downloads/'), 'Package has a local verified counterpart');
+  const fallback = [...html.matchAll(/<a\b[^>]*>/g)].find(match => match[0].includes(`data-download="${platform}"`))?.[0];
+  assert(fallback?.includes(`href="${item.url}"`), `${platform} static download matches manifest`);
+  const file = path.resolve(site, local);
   const bytes = fs.readFileSync(file);
   assert.equal(bytes.length, item.bytes, `${platform} package size matches manifest`);
   assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'), item.sha256, `${platform} checksum matches`);

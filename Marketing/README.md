@@ -21,12 +21,12 @@ Version 0.2.1 adds four comparison renders to the same player: `bass-memory{0,10
 
 After the workflow succeeds, download `MEGATUBULAS-Windows-x64`, then run `python3 scripts/integrate-windows.py /artifact/folder`. This enables the Windows button only for matching version/hash/test evidence. Native build checks do not prove compatibility with every Windows DAW.
 
-At preparation time, the Windows button explicitly says BUILD PENDING. No fabricated Windows download URL or Mac binary labelled as Windows.
+Windows v0.2.1 passed native build, 345 numerical checks, 118 integration checks and pluginval strictness 5 in [run 37619284751](https://github.com/tomislavrupic/MEGATUBULAS/actions/runs/37619284751). Its artifact was downloaded, checked against the successful run and commit, and verified for ZIP CRC, SHA256 and x64 PE architecture before integration. Both platform buttons now use verified release asset URLs.
 
 ## Publishing
 
-The original brief says **“Do not publish, deploy”**. Local page and packages are prepared; repository creation/publication still requires the user's go-ahead. Recommended repository: `tomislavrupic/MEGATUBULAS`, public source under AGPLv3, with GitHub Pages serving `Marketing/site` and release assets holding the binaries/source ZIP.
+The user authorized public source, repository creation, native Windows CI and publication on 2026-10-07. Repository: `tomislavrupic/MEGATUBULAS`, public source under AGPLv3. GitHub Pages serves `Marketing/site`; release assets hold the binaries and full corresponding-source ZIP.
 
-Before publishing: run native Windows CI, attach all three checked ZIPs plus SHA256SUMS to a release, rewrite `downloads.json` entries to those actual release asset URLs, update the two static Mac/source fallback links and social image/canonical URL, and verify all downloads. Configure Pages only after approval. Check the deployed route independently of the push.
+Release preparation: `scripts/package-downloads.py` creates Mac/full-source ZIPs and preserves a matching checked Windows artifact. `scripts/prepare-release.py` verifies all ZIP hashes, writes their GitHub release URLs, updates all static fallback links and social/canonical metadata, and writes SHA256SUMS. Upload the three ZIPs and evidence before publishing the release. `.github/workflows/pages.yml` deploys `Marketing/site`; check its completed run and the live route independently of the push.
 
 Official references: [GitHub Windows runners](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job), [workflow artifacts](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflow-artifacts), [JUCE source/build guidance](https://github.com/juce-framework/JUCE), [pluginval 1.0.4](https://github.com/Tracktion/pluginval/releases/tag/v1.0.4).

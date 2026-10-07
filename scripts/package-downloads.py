@@ -101,7 +101,9 @@ windows_zip = downloads / f"MEGATUBULAS-{version}-Windows-x64.zip"
 evidence = root / "packaging/windows-validation.json"
 if windows_zip.is_file() and evidence.is_file():
     checked = json.loads(evidence.read_text())
-    if checked.get("sha256") == hashlib.sha256(windows_zip.read_bytes()).hexdigest() and checked.get("testsPassed") is True:
+    if (checked.get("version") == version and checked.get("platform") == "Windows-x64"
+            and checked.get("sha256") == hashlib.sha256(windows_zip.read_bytes()).hexdigest()
+            and checked.get("testsPassed") is True):
         manifest["downloads"]["windows"] = entry(windows_zip)
 (site / "downloads.json").write_text(json.dumps(manifest, indent=2) + "\n")
 (downloads / "SHA256SUMS.txt").write_text("".join(f"{item['sha256']}  {Path(item['url']).name}\n" for item in manifest["downloads"].values() if item["status"] == "ready"))

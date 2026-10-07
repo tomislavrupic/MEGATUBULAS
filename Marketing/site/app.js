@@ -75,11 +75,11 @@ async function loadDownloads() {
         const state = document.querySelector("#windows-state");
         state.textContent = "AVAILABLE";
         state.classList.remove("pending");
-        document.querySelector("#windows-explanation").textContent = "Native Windows x64 build. Numerical and processor-state checks passed before packaging. Additional DAW compatibility remains a listening and host check.";
+        document.querySelector("#windows-explanation").textContent = "Native Windows x64 build. Numerical, processor-state and VST3 pluginval checks passed before packaging. This build is unsigned. Additional DAW compatibility remains a listening and host check.";
       }
       const info = document.querySelector(`#${platform}-file-info`);
       if (info) info.textContent = `v${manifest.version} · ${(entry.bytes / 1048576).toFixed(1)} MB · ZIP`;
     }
-  } catch { /* Static Mac/source links remain usable; Windows stays explicitly pending. */ }
+  } catch { /* Verified static download links remain usable without the manifest. */ }
 }
 loadDownloads();

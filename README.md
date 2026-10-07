@@ -33,7 +33,7 @@ cmake --build build-win --config Release --target Megatubulas_VST3 Megatubulas_S
 ctest --test-dir build-win -C Release --output-on-failure
 ```
 
-Windows source target supplied; **not built or tested on Windows**. No Windows compatibility claim. Intel Mac / universal binaries are also unverified. No publication or deployment has been performed.
+Download Mac AU/VST3/standalone, Windows x64 VST3/standalone and full corresponding source from [the landing page](https://tomislavrupic.github.io/MEGATUBULAS/) or [release v0.2.1](https://github.com/tomislavrupic/MEGATUBULAS/releases/tag/v0.2.1). [Native Windows CI](https://github.com/tomislavrupic/MEGATUBULAS/actions/runs/37619284751) passed 345 numerical checks, 118 processor integration checks and pluginval 1.0.4 strictness 5. Windows binaries are unsigned. Intel Mac / universal binaries are unverified.
 
 ## Install on macOS
 
@@ -92,4 +92,4 @@ No QRNG service adapter or credentials are included. Seeded mode is a PRNG, neve
 
 ## Licensing
 
-Project source: AGPL-3.0-only, following the open-source route chosen for the Pixel Records plugin work. JUCE modules are used under their AGPLv3 option; see `LICENSE` and JUCE's `LICENSE.md` for bundled third-party notices. Any future binary redistribution must include the corresponding source and required notices. No release has been published.
+Project source: AGPL-3.0-only, following the open-source route chosen for the Pixel Records plugin work. JUCE modules are used under their AGPLv3 option; see `LICENSE` and JUCE's `LICENSE.md` for bundled third-party notices. Binary redistribution includes the full corresponding-source ZIP and required notices alongside the platform downloads. Public release and GitHub Pages publication were authorized on 2026-10-07.

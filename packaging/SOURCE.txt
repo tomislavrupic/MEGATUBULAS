@@ -11,3 +11,6 @@ Upstream: https://github.com/juce-framework/JUCE
 For a local preview, corresponding source is the adjacent source ZIP in the
 same downloads directory. A public binary release must publish that archive
 alongside these binaries. Do not publish binaries without corresponding source.
+
+Project and releases: https://github.com/tomislavrupic/MEGATUBULAS
+Download page: https://tomislavrupic.github.io/MEGATUBULAS/

@@ -1,6 +1,7 @@
 build*/
 third_party/
 .venv/
+__pycache__/
 install-backups/
 .DS_Store
 Marketing/site/downloads/

@@ -2,8 +2,8 @@
 """Reproduce SVG measurements using numpy. No plotting GUI or cloud dependency."""
 from pathlib import Path
 import numpy as np
-import json, html
-root=Path(__file__).resolve().parents[1]/'analysis'
+import json, html, sys
+root=Path(sys.argv[1]).resolve() if len(sys.argv)>1 else Path(__file__).resolve().parents[1]/'analysis'
 a=np.genfromtxt(root/'measurements.csv',delimiter=',',names=True)
 fs=48000
 colors=['#e5a349','#ac80ff','#63dfff','#aaaaaa']

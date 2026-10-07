@@ -3,19 +3,21 @@
   "downloads": {
     "mac": {
       "status": "ready",
-      "url": "downloads/MEGATUBULAS-0.2.1-macOS-arm64.zip",
-      "bytes": 123516274,
-      "sha256": "5659205b01d75f2f1245f2a290ac49cd40303ada584a85356b92a30a84b43295"
+      "url": "https://github.com/tomislavrupic/MEGATUBULAS/releases/download/v0.2.1/MEGATUBULAS-0.2.1-macOS-arm64.zip",
+      "bytes": 123516315,
+      "sha256": "7c98e0d2c4ffb160cfab78bd8024193b3b0bf47199f15f3e6ba17d2cc19d02ae"
     },
     "source": {
       "status": "ready",
-      "url": "downloads/MEGATUBULAS-0.2.1-source.zip",
-      "bytes": 79112581,
-      "sha256": "9dd4a45e956eb95602ae643e05c6bc41249b77a8ca9de54de545733ed18bc933"
+      "url": "https://github.com/tomislavrupic/MEGATUBULAS/releases/download/v0.2.1/MEGATUBULAS-0.2.1-source.zip",
+      "bytes": 79116019,
+      "sha256": "c5dadc2f9f32c8056d3c6717126632b9050b0f735090e8b8a1aedfd15dac68c4"
     },
     "windows": {
-      "status": "pending",
-      "reason": "Native Windows x64 build and checks have not run."
+      "status": "ready",
+      "url": "https://github.com/tomislavrupic/MEGATUBULAS/releases/download/v0.2.1/MEGATUBULAS-0.2.1-Windows-x64.zip",
+      "bytes": 79100253,
+      "sha256": "651b61488c929738405d5a21809c588f99dac5306cce08e2530eb75e6a619681"
     }
   }
 }
