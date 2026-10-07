@@ -13,6 +13,7 @@ void detectorTests(){
  for(double fs:{44100.,48000.,96000.})for(double hz:{25.,30.8677,41.2034,55.,82.4069,110.,220.,400.})for(int kind:{0,1}){
   micro::PitchTracker t;t.prepare(fs,2);micro::PitchEstimate e{};int locked=0,correct=0;double first=-1;
   for(int i=0;i<int(fs*.5);++i){double x=.6*bass(2*micro::pi*hz*i/fs,kind);e=t.process(x,-x);if(e.locked&&first<0)first=i/fs;if(i>int(fs*.25)){locked+=e.locked;correct+=e.locked&&cents(e.hz,hz)<20;}}
+  std::cout<<"pitch,"<<fs<<','<<hz<<','<<kind<<','<<first<<','<<cents(e.hz,hz)<<','<<correct<<'\n';
   if(correct<int(fs*.20))std::cerr<<"pitch fixture fs="<<fs<<" hz="<<hz<<" kind="<<kind<<" got="<<e.hz<<" locked="<<locked<<" first="<<first<<'\n';
   check(correct>int(fs*.20),"periodic/weak fundamental/anti-phase bass tracks within 20 cents");check(first>=0&&first<.15,"periodic note acquisition under 150 ms");
  }

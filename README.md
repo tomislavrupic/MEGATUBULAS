@@ -6,6 +6,10 @@ Experimental original stateful saturation effect. Three causal saturating stages
 
 The project directory retains its original MICROTUBULAS name for asset lineage. The plugin, bundles and UI are now MEGATUBULAS. Parameter IDs, the schema-1 `MICROTUBULAS` state root, and the AU/VST3 manufacturer/plugin codes remain unchanged. Version 0.2.1 intentionally strengthens Memory/Coupling: saved sessions load the same parameter values but their sound changes with the revised engine. The installer backs up the previous binary.
 
+## Harmonic FM experiment (v0.3.0 candidate)
+
+The isolated `codex/harmonic-fm` branch adds an optional pitch-following FM voice before saturation. Memory sits in the left lattice, Drive in the centre, and FM Amount in the right. Depth and the 1x/2x/3x harmonic ratio are in Advanced; the main interface shows tracking status and detected frequency. It targets single bass notes from 25–400 Hz, with continuous bends and a measured acquisition delay. Amount or Depth zero silences the entire layer. Existing presets and older sessions start with FM off. Version 0.3.0 is the experimental FM release; v0.2.1 is retained as the previous release archive. See [FM validation](docs/HARMONIC_FM_VALIDATION.md).
+
 ## Local build
 
 C++20, CMake ≥3.24, JUCE **8.0.14**, pinned commit `2cdfca8feb300fb424002ba2c2751569e5bacb64`. This Mac build used Xcode 27 / Apple Clang 21, arm64. New project is isolated from Titty Tweeter; no source was copied from that processor. JUCE was consumed as a package dependency from its existing local cache during development.
@@ -29,7 +33,7 @@ Outputs: `build/Megatubulas_artefacts/Release/{AU,VST3,Standalone}`. On Windows,
 git clone --depth 1 --branch 8.0.14 https://github.com/juce-framework/JUCE.git third_party/JUCE
 git -C third_party/JUCE rev-parse HEAD # must match the pinned revision above
 cmake -S . -B build-win -A x64
-cmake --build build-win --config Release --target Megatubulas_VST3 Megatubulas_Standalone MicroTests MicroIntegration
+cmake --build build-win --config Release --target Megatubulas_VST3 Megatubulas_Standalone MicroTests MicroIntegration MicroFMTests MegaRender
 ctest --test-dir build-win -C Release --output-on-failure
 ```
 
@@ -72,7 +76,7 @@ Sliders support mouse drag, editable numeric values, double-click default reset,
 
 The supplied second animation is embedded as 31 sampled PNG frames, with shared decoding outside the callback. The 121 supplied frames have no timing metadata; the mapping assumes nominal 30 fps. A one-source-second window plays forward and back; Drive 0–100 chooses its start from nominal 0–3 seconds. After the request for slower playback, wall-clock speed is now `0.50 − 0.35×Memory + 0.25×Variation`, with normalized knobs. Default Memory 40 / Variation 0 gives about 2.78 seconds each direction; maximum Memory / zero Variation gives 6.67 seconds each direction. Speed changes smooth over 400 ms; Drive position smooths over 50 ms. Reduced motion holds the Drive-selected frame and freezes the noise drift.
 
-The enlarged native interface is 1320×880. Black fluted synth-style knobs have aluminium caps and ivory pointers. A true premultiplied RGBA interpolation replaces two source-over draws, avoiding the 25% midpoint opacity dip. A bounded 49×19 coherent value-noise field modulates highlights through the lattice; audio peak telemetry controls its brightness with an 80 ms attack and a 350–1000 ms release set by Memory. This is a CPU-rendered shader-like effect on the UI thread, not a GPU shader or biological measurement. Memory also controls afterglow, Coupling draws connecting strands, and selection events are deliberately subdued.
+The native interface is 1320×880, with an undistorted 3:2 background plate drawn in one pass. Signal- and Drive-dependent amber lights glow inside the side grilles with a 65 ms attack / 650 ms release; their coherent highlights respect reduced motion. Black fluted synth-style knobs have aluminium caps and ivory pointers. A true premultiplied RGBA interpolation replaces two source-over draws, avoiding the 25% midpoint opacity dip. A bounded 49×19 coherent value-noise field modulates highlights through the lattice; audio peak telemetry controls its brightness with an 80 ms attack and a 350–1000 ms release set by Memory. This is a CPU-rendered shader-like effect on the UI thread, not a GPU shader or biological measurement. Memory also controls afterglow, Coupling draws connecting strands, and selection events are deliberately subdued.
 
 Input animations include low-alpha codec residue; a bounded alpha threshold is applied in the UI texture importer, without changing the originals. Source paths and hashes are in `Artwork/Animation/v2/provenance.json`. The previous animation is preserved separately. Geometry is cached at fixed depth/count; no spectrum analysis is performed by the UI.
 

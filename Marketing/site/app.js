@@ -2,7 +2,7 @@
 const audio = document.querySelector("#demo-audio");
 const audioStatus = document.querySelector("#audio-status");
 const deck = document.querySelector(".listening-deck");
-const audioFiles = { dry: "bass-dry.wav", warm: "bass-warm65.wav", tense: "bass-tense85.wav", memory0: "bass-memory0.wav", memory100: "bass-memory100.wav", coupling0: "bass-coupling0.wav", coupling100: "bass-coupling100.wav" };
+const audioFiles = { dry: "bass-dry.wav", warm: "bass-warm65.wav", tense: "bass-tense85.wav", memory0: "bass-memory0.wav", memory100: "bass-memory100.wav", coupling0: "bass-coupling0.wav", coupling100: "bass-coupling100.wav", fmOff: "bass-fm-off.wav", fm1: "bass-fm-ratio1.wav", fm2: "bass-fm-ratio2.wav", fm3: "bass-fm-ratio3.wav" };
 let selectedAudio = "dry";
 let audioSwitch = 0;
 document.querySelectorAll("[data-audio]").forEach(button => {

@@ -56,7 +56,7 @@ for (const platform of ['mac', 'windows', 'source']) {
   assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'), item.sha256, `${platform} checksum matches`);
   packages++;
 }
-const demos = ['bass-dry.wav', 'bass-warm65.wav', 'bass-tense85.wav', 'bass-memory0.wav', 'bass-memory100.wav', 'bass-coupling0.wav', 'bass-coupling100.wav'];
+const demos = ['bass-dry.wav', 'bass-warm65.wav', 'bass-tense85.wav', 'bass-memory0.wav', 'bass-memory100.wav', 'bass-coupling0.wav', 'bass-coupling100.wav', 'bass-fm-off.wav', 'bass-fm-ratio1.wav', 'bass-fm-ratio2.wav', 'bass-fm-ratio3.wav'];
 for (const name of demos) {
   const buffer = fs.readFileSync(path.join(site, 'assets/audio', name));
   assert.equal(buffer.toString('ascii', 0, 4), 'RIFF', 'Demo is a WAV');

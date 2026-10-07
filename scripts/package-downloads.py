@@ -41,7 +41,7 @@ with zipfile.ZipFile(source_zip, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as 
             archive.write(path, f"{prefix}/{path.relative_to(root)}")
     for path in sorted((root / "Artwork/Animation/v2").glob("*.png")):
         archive.write(path, f"{prefix}/{path.relative_to(root)}")
-    for name in ["frame-background-v1.png", "lattice-strip-v2.png"]:
+    for name in ["frame-background-v030.png", "lattice-strip-v2.png"]:
         path = root / "Artwork/AI" / name
         archive.write(path, f"{prefix}/{path.relative_to(root)}")
     for name in ["provenance.json"]:

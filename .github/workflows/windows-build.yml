@@ -21,7 +21,7 @@ jobs:
         run: |
           cmake -S . -B build-win -G 'Visual Studio 17 2022' -A x64
           if ($LASTEXITCODE -ne 0) { throw 'Configure failed' }
-          cmake --build build-win --config Release --parallel 4 --target Megatubulas_VST3 Megatubulas_Standalone MicroTests MicroIntegration
+          cmake --build build-win --config Release --parallel 4 --target Megatubulas_VST3 Megatubulas_Standalone MicroTests MicroIntegration MicroFMTests MegaRender
           if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
       - name: Numerical and processor checks
         shell: pwsh
