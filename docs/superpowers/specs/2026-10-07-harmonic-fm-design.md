@@ -55,7 +55,7 @@ Advance `phi` continuously from the smoothed tracked frequency. Carrier/modulato
 
 ## Controls and interface
 
-Add a clearly labelled **HARMONIC FM · EXPERIMENTAL** section to the existing expanded panel, retaining the large lattice and current main controls:
+User steering (2026-10-07): place Memory inside the left animation structure, Drive in the central structure, and FM Amount inside the right structure. Retain the large lattice around the controls. Move the remaining top-row controls into an evenly spaced Coupling / Blend / Output row. Add a clearly labelled **HARMONIC FM · EXPERIMENTAL** section for Depth, Ratio and tracking status in the expanded panel:
 
 | Permanent ID | Display | Range / choices | Default |
 | --- | --- | --- | --- |
