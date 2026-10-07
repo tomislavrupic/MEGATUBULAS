@@ -8,7 +8,8 @@ public:
  MicroProcessor();
  juce::AudioProcessorValueTreeState state;
  micro::Pipeline pipeline;
- std::atomic<float> inMeter{0},outMeter{0},memoryMeter{0},matchDb{0};
+ std::atomic<float> inMeter{0},outMeter{0},memoryMeter{0},matchDb{0},fmHz{0},fmConfidence{0},fmGate{0};
+ std::atomic<int> fmTrackingState{0};
  std::atomic<int> selection{3},eventCount{0},entropyPosition{0},entropyExhausted{0},matchState{0},activeQuality{4};
  std::atomic<bool> resetRequested{false},matchRequested{false},exploreRequested{false};
  std::array<std::atomic<float>,6> selectedVector{};
@@ -32,6 +33,6 @@ private:
  struct Slot {micro::EntropyConfig config;std::atomic<int> status{0};};std::array<Slot,4> queue;
  std::atomic<unsigned> producer{0},consumer{0};mutable std::mutex configMutex;micro::EntropyConfig savedConfig;
  std::atomic<int> program{0};bool wasOffline=false;
- std::array<std::atomic<float>*,20> values{};
+ std::array<std::atomic<float>*,23> values{};
  bool enqueue(const micro::EntropyConfig&);void consume() noexcept;
 };
