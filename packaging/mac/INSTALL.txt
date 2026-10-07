@@ -1,0 +1,37 @@
+MEGATUBULAS 0.2.1 — Pixel Records
+Apple Silicon (arm64), macOS 12 or later. AU + VST3 + standalone.
+
+Close your DAW before installing.
+
+EASY OPTION
+Double-click “Install plugins.command”. It installs only for your user and
+keeps a timestamped backup of existing MEGATUBULAS bundles. No admin needed.
+Review the script in a text editor first if you prefer.
+
+MANUAL OPTION
+In Finder, choose Go > Go to Folder and paste:
+  ~/Library/Audio/Plug-Ins/Components
+Copy MEGATUBULAS.component here. Create the folder if it is missing.
+
+Then open:
+  ~/Library/Audio/Plug-Ins/VST3
+Copy the entire MEGATUBULAS.vst3 bundle here (a Pixel Records subfolder is OK).
+
+Restart/rescan your DAW and look under Pixel Records. Check v0.2.1 in the
+editor footer. macOS does not use the Windows VST3 build, or vice versa.
+
+The standalone app is optional. Move it to your Applications folder to use
+outside a DAW; it may request microphone permission for audio input.
+
+This is an ad-hoc-signed development build, not notarized. macOS may block
+downloaded software until you approve it under System Settings > Privacy &
+Security. Do that only if you trust the download. The installer does not
+disable Gatekeeper or change quarantine attributes.
+
+Intel Macs are not supported by this package. The binary has a macOS 12
+minimum deployment target; it has been exercised on the developer's current
+Apple Silicon Mac, not every older macOS version or every DAW.
+
+No hidden output limiter. Watch your levels; use Match for comparisons.
+
+AGPL-3.0-only. See LICENSE.txt and SOURCE.txt for corresponding source.

@@ -1,0 +1,165 @@
+{
+  "supplied_frames": 121,
+  "embedded_frames": 31,
+  "source_fps": "not supplied; nominal 30 fps mapping",
+  "playback": "one second forward, one second backward; Drive selects start",
+  "import": "copy only; low alpha residue threshold applied at runtime; originals unchanged",
+  "frames": [
+    {
+      "source": "pussy_00000.png",
+      "asset": "micro_00000.png",
+      "sha256": "8edbdf09163a6fe5d0b237345f0610beb478dfb8fc337504691114310d0a1f22"
+    },
+    {
+      "source": "pussy_00004.png",
+      "asset": "micro_00004.png",
+      "sha256": "e3946d4153dbb133ddc4f7c49f7b6dc2e1c86d0cd6b61d0ec7f3f8c842d034f2"
+    },
+    {
+      "source": "pussy_00008.png",
+      "asset": "micro_00008.png",
+      "sha256": "ac6a162a8b1efbd3571d90619f13f4bae6f2d57cdacb0d12722cf8a9085023a3"
+    },
+    {
+      "source": "pussy_00012.png",
+      "asset": "micro_00012.png",
+      "sha256": "1dd60b36e090bfa612dcb67a093899885261338e87145bf896e27de2b42fe0aa"
+    },
+    {
+      "source": "pussy_00016.png",
+      "asset": "micro_00016.png",
+      "sha256": "a4c52307829ed0d45f63b9a333593c5be7ab17d6c0e62c36d24fad8effdb257b"
+    },
+    {
+      "source": "pussy_00020.png",
+      "asset": "micro_00020.png",
+      "sha256": "0f098b71e5da58fdc8454a112bc253dfd0a455801b02859bb394bda4a2ee09d9"
+    },
+    {
+      "source": "pussy_00024.png",
+      "asset": "micro_00024.png",
+      "sha256": "4c7e346efd6dddb6c37cf19191af05a026979c68519501b43e28bba5aa0b9058"
+    },
+    {
+      "source": "pussy_00028.png",
+      "asset": "micro_00028.png",
+      "sha256": "8dcf56c39d7dbc969393dec4915a7f1cb11b9c5f7280c181eef792d4148aa6a7"
+    },
+    {
+      "source": "pussy_00032.png",
+      "asset": "micro_00032.png",
+      "sha256": "8a73e1aa4891c4c6102aca29486e14685ddb46a3010c4bd42620453caefc8e42"
+    },
+    {
+      "source": "pussy_00036.png",
+      "asset": "micro_00036.png",
+      "sha256": "89350fbfd3b152daf3d93c46d9e358df02a7b5ebe0a00d9663bbd07fc3142f7c"
+    },
+    {
+      "source": "pussy_00040.png",
+      "asset": "micro_00040.png",
+      "sha256": "bdf1ddf1373031da87519f8f819b52442a956ec1abfba2f8a13b7cecb4c625aa"
+    },
+    {
+      "source": "pussy_00044.png",
+      "asset": "micro_00044.png",
+      "sha256": "75b23db318f5deea1df0df714162ac516e9011193dacbb280485885654fbceec"
+    },
+    {
+      "source": "pussy_00048.png",
+      "asset": "micro_00048.png",
+      "sha256": "0ade62fbf58123e4bd372db4c9a3c1da00c9eaa87e559caba2671946f1d044e4"
+    },
+    {
+      "source": "pussy_00052.png",
+      "asset": "micro_00052.png",
+      "sha256": "d9c8ae3e9405c0f190e7cca2fd2a57dd1c64b94ee4a49a1b6e88dcb12f6a76dd"
+    },
+    {
+      "source": "pussy_00056.png",
+      "asset": "micro_00056.png",
+      "sha256": "8981402dcd5d97c81aa67396eb54088d10c791f9bbdb509742ac08c26fb92995"
+    },
+    {
+      "source": "pussy_00060.png",
+      "asset": "micro_00060.png",
+      "sha256": "1d44b99a55b903d3ba17120198c8012db2e0d8815b83ede5f264bf9a34370d6d"
+    },
+    {
+      "source": "pussy_00064.png",
+      "asset": "micro_00064.png",
+      "sha256": "b9cccd008249fea0750404a5453f142608af7821f70b9b0df5ea44bd58836716"
+    },
+    {
+      "source": "pussy_00068.png",
+      "asset": "micro_00068.png",
+      "sha256": "ded4ac5e92cc47d9d68975aa541eaeb8a103b3ddf87f8e254c5a4942580d1b75"
+    },
+    {
+      "source": "pussy_00072.png",
+      "asset": "micro_00072.png",
+      "sha256": "8b2fefdcd28b24e1cda9b58cc3d77b5db02256715ed33516d4a788185eb64c1a"
+    },
+    {
+      "source": "pussy_00076.png",
+      "asset": "micro_00076.png",
+      "sha256": "ca7b2df4368f33251807918ac54040c70e378b969b430e04f2c591506ea8c856"
+    },
+    {
+      "source": "pussy_00080.png",
+      "asset": "micro_00080.png",
+      "sha256": "40386cf122c451f83fcb646acb6c912fd4ca4739f1e2356bc0fffc70abd62d5b"
+    },
+    {
+      "source": "pussy_00084.png",
+      "asset": "micro_00084.png",
+      "sha256": "5f6dbc6d2558180e8b238822fb224a2fa038ea4bc0ea70a0b84e230548711a8f"
+    },
+    {
+      "source": "pussy_00088.png",
+      "asset": "micro_00088.png",
+      "sha256": "cc6264cdbe2b3b9060fa97d9220cf1b89d258edf865ff56db4fa88aa35da8e8b"
+    },
+    {
+      "source": "pussy_00092.png",
+      "asset": "micro_00092.png",
+      "sha256": "56493288205daa8ceb1cb0a697036100f836f0b7c61dfdf1e55aad6d8a2a0ec4"
+    },
+    {
+      "source": "pussy_00096.png",
+      "asset": "micro_00096.png",
+      "sha256": "807953dd81fe516b6675a9f3e88331047be9c209a8722cd63c7ed436e20b3e4f"
+    },
+    {
+      "source": "pussy_00100.png",
+      "asset": "micro_00100.png",
+      "sha256": "1dac8e7034d1903bf8d7955eae3684871f80e4f9bb91c5d8d483cdf99ed1c426"
+    },
+    {
+      "source": "pussy_00104.png",
+      "asset": "micro_00104.png",
+      "sha256": "134f6f48b53630474832d93d7c3dbdfa010d9073b89b7f5ffb50e4db10cf4fb1"
+    },
+    {
+      "source": "pussy_00108.png",
+      "asset": "micro_00108.png",
+      "sha256": "04f96daa9cde05b670cda5fd8696808c9e8309039df3d3c962ce03661aaca2a2"
+    },
+    {
+      "source": "pussy_00112.png",
+      "asset": "micro_00112.png",
+      "sha256": "f125afb6245bb311f10a8cd136ce7d6b04799fd97609095b0bca6a6f7decfcdc"
+    },
+    {
+      "source": "pussy_00116.png",
+      "asset": "micro_00116.png",
+      "sha256": "0ac9e77603f6dd09ce8a47258cca11743a5ec92dad3228f74c471431b3b2f79a"
+    },
+    {
+      "source": "pussy_00120.png",
+      "asset": "micro_00120.png",
+      "sha256": "996f7541a756e231f7df1510ea1a23b5ea7867af7c04e33a7ca9a7188ba4dd26"
+    }
+  ],
+  "source_location": "Supplied animation directory retained privately; frame names and hashes preserve lineage."
+}

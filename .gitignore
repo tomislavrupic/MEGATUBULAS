@@ -1,0 +1,16 @@
+build*/
+third_party/
+.venv/
+install-backups/
+.DS_Store
+Marketing/site/downloads/
+Marketing/demo-source/
+packaging/stage/
+packaging/tool-cache/
+output/
+.playwright-cli/
+analysis/
+References/
+Artwork/Animation/*.png
+Artwork/Animation/provenance.json
+Artwork/Layers/

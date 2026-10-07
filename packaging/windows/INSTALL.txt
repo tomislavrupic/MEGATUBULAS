@@ -1,0 +1,18 @@
+MEGATUBULAS 0.2.1 — Pixel Records
+Windows x64. VST3 + standalone.
+
+Close your DAW. Copy the ENTIRE MEGATUBULAS.vst3 bundle/folder to:
+  C:\Program Files\Common Files\VST3\Pixel Records
+Create Pixel Records if necessary. Windows may ask for administrator approval.
+Keep a backup before replacing an earlier version. Do not copy only the inner
+binary; its bundle structure is required. Rescan your DAW and look for
+Pixel Records / MEGATUBULAS. Confirm v0.2.1 in the editor footer.
+
+MEGATUBULAS.exe is the optional standalone application; it does not replace
+the VST3 in your DAW. AU plugins are macOS-only.
+
+This is an unsigned development build. Windows may ask you to confirm that
+you trust it. Numerical/processor checks are not a guarantee for every DAW.
+No hidden limiter. Watch your levels; use Match for comparisons.
+
+AGPL-3.0-only. See LICENSE.txt and SOURCE.txt for corresponding source.

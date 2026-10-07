@@ -1,0 +1,13 @@
+MEGATUBULAS — corresponding source
+
+This software is released under AGPL-3.0-only.
+Download MEGATUBULAS-0.2.1-source.zip beside the binary download on the
+MEGATUBULAS landing page. It includes the plugin's source, artwork needed to
+build it, build scripts, AGPL licence, and pinned JUCE source with its notices.
+
+JUCE revision: 2cdfca8feb300fb424002ba2c2751569e5bacb64 (8.0.14)
+Upstream: https://github.com/juce-framework/JUCE
+
+For a local preview, corresponding source is the adjacent source ZIP in the
+same downloads directory. A public binary release must publish that archive
+alongside these binaries. Do not publish binaries without corresponding source.
