@@ -1,40 +1,65 @@
-name: Windows numerical crash diagnostic
+name: Windows x64 build and validation
 on:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  diagnostic:
+  windows:
     runs-on: windows-2022
-    timeout-minutes: 15
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch pinned JUCE
+      - name: Fetch reviewed JUCE revision
         shell: pwsh
         run: |
           git clone --depth 1 --branch 8.0.14 https://github.com/juce-framework/JUCE.git third_party/JUCE
           if ($LASTEXITCODE -ne 0) { throw 'JUCE clone failed' }
-          if ((git -C third_party/JUCE rev-parse HEAD).Trim() -ne '2cdfca8feb300fb424002ba2c2751569e5bacb64') { throw 'JUCE pin mismatch' }
-      - name: Build numerical executable with assembly diagnostics
+          $revision = git -C third_party/JUCE rev-parse HEAD
+          if ($revision.Trim() -ne '2cdfca8feb300fb424002ba2c2751569e5bacb64') { throw 'JUCE pin mismatch' }
+      - name: Configure and build native x64
         shell: pwsh
         run: |
-          cmake -S . -B build-diag -A x64 '-DCMAKE_CXX_FLAGS_RELEASE=/O2 /DNDEBUG /FAs'
+          cmake -S . -B build-win -G 'Visual Studio 17 2022' -A x64
           if ($LASTEXITCODE -ne 0) { throw 'Configure failed' }
-          cmake --build build-diag --config Release --parallel 4 --target MicroTests
+          cmake --build build-win --config Release --parallel 4 --target Megatubulas_VST3 Megatubulas_Standalone MicroTests MicroIntegration MicroFMTests MegaRender
           if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
-      - name: Capture direct Windows exception code
+      - name: Numerical and processor checks
         shell: pwsh
         run: |
-          & build-diag/MicroTests_artefacts/Release/MicroTests.exe | Tee-Object numerical-direct.log
-          $code = $LASTEXITCODE
-          "Exit code: $code / hex $([Convert]::ToString($code,16))" | Tee-Object -Append numerical-direct.log
-          exit $code
+          ctest --test-dir build-win -C Release --output-on-failure -V | Tee-Object windows-tests.log
+          if ($LASTEXITCODE -ne 0) { throw 'Tests failed' }
+      - name: Validate VST3 with pluginval 1.0.4
+        shell: pwsh
+        run: |
+          Invoke-WebRequest 'https://github.com/Tracktion/pluginval/releases/download/v1.0.4/pluginval_Windows.zip' -OutFile pluginval.zip
+          Expand-Archive pluginval.zip tools/pluginval
+          $validator = Get-ChildItem tools/pluginval -Recurse -Filter pluginval.exe | Select-Object -First 1
+          if (-not $validator) { throw 'Validator executable not found' }
+          $bundle = (Resolve-Path 'build-win/Megatubulas_artefacts/Release/VST3/MEGATUBULAS.vst3').Path
+          & $validator.FullName --strictness-level 5 --validate $bundle | Tee-Object windows-pluginval.log
+          if ($LASTEXITCODE -ne 0) { throw 'Plugin validation failed' }
+      - name: Package checked binaries and evidence
+        shell: pwsh
+        run: |
+          $version = ([regex]::Match((Get-Content CMakeLists.txt -Raw), 'project\(MEGATUBULAS VERSION ([0-9.]+)')).Groups[1].Value
+          if (-not $version) { throw 'Missing version' }
+          $folder = "MEGATUBULAS-$version-Windows-x64"
+          New-Item -ItemType Directory -Path "release/$folder" -Force
+          Copy-Item 'build-win/Megatubulas_artefacts/Release/VST3/MEGATUBULAS.vst3' "release/$folder/" -Recurse
+          Copy-Item 'build-win/Megatubulas_artefacts/Release/Standalone/MEGATUBULAS.exe' "release/$folder/"
+          Copy-Item packaging/windows/INSTALL.txt "release/$folder/"
+          Copy-Item LICENSE "release/$folder/LICENSE.txt"
+          Copy-Item packaging/SOURCE.txt "release/$folder/"
+          Compress-Archive "release/$folder" "release/$folder.zip"
+          $hash = (Get-FileHash "release/$folder.zip" -Algorithm SHA256).Hash.ToLower()
+          @{version=$version; sha256=$hash; testsPassed=$true; platform='Windows-x64'; pluginval='1.0.4 strictness 5'; commit=$env:GITHUB_SHA; run=$env:GITHUB_RUN_ID} | ConvertTo-Json | Set-Content release/windows-validation.json
+          Copy-Item windows-tests.log,windows-pluginval.log release/
       - uses: actions/upload-artifact@v4
-        if: always()
         with:
-          name: Windows-numerical-diagnostic
+          name: MEGATUBULAS-Windows-x64
           path: |
-            numerical-direct.log
-            build-diag/**/Tests.asm
-            build-diag/**/MicroTests.exe
-          retention-days: 7
+            release/*.zip
+            release/windows-validation.json
+            release/*.log
+          if-no-files-found: error
+          retention-days: 30
