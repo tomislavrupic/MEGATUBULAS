@@ -1,4 +1,5 @@
 #include "PitchTracker.h"
+#include "HarmonicFM.h"
 #include <iostream>
 #include <vector>
 #include <chrono>
@@ -27,5 +28,19 @@ void detectorTests(){
   t.reset();check(!t.process(0,0).locked,"reset clears note lock");
  }
 }
+double component(const std::vector<double>& v,double hz,double fs){double a=0,b=0;for(size_t i=0;i<v.size();++i){double p=2*micro::pi*hz*i/fs;a+=v[i]*std::cos(p);b+=v[i]*std::sin(p);}return 2*std::hypot(a,b)/v.size();}
+void voiceTests(){
+ const double fs=192000;micro::FMControl c{55,1,{.5,.5}};
+ for(int ratio:{1,2,3}){micro::HarmonicFM voice;voice.prepare(fs);voice.set(80,70,ratio);std::vector<double> samples;double peak=0,mean=0;
+  for(int i=0;i<int(fs*1.5);++i){auto y=voice.sample(c);peak=std::max(peak,std::abs(y[0]));if(!std::isfinite(y[0])||y[0]!=y[1]){check(false,"FM finite linked stereo output");break;}if(i>=int(fs*.5)){samples.push_back(y[0]);mean+=y[0];}}
+  double harmonic=0;for(int n=2;n<=9;++n)harmonic+=std::pow(component(samples,55*n,fs),2);
+  check(harmonic>1e-4,"FM adds harmonics at integer multiples");check(component(samples,137,fs)<.001,"FM does not add stationary inharmonic tone");check(peak<.4&&std::abs(mean/samples.size())<1e-4,"FM contribution bounded and DC rejected");
+  voice.reset();voice.set(80,70,ratio);std::vector<double> a;for(int i=0;i<2000;++i)a.push_back(voice.sample(c)[0]);voice.reset();voice.set(80,70,ratio);bool same=true;for(double x:a)same&=x==voice.sample(c)[0];check(same,"FM reset deterministically replays");
+  voice.set(80,70,ratio==3?1:ratio+1);double previous=0,maxStep=0;for(int i=0;i<int(fs*.2);++i){double y=voice.sample(c)[0];if(i)maxStep=std::max(maxStep,std::abs(y-previous));previous=y;}check(maxStep<.02,"ratio transition remains click free on 55 Hz fixture");
+  c.gate=0;double tail=0;for(int i=0;i<int(fs*1.5);++i){double y=voice.sample(c)[0];if(i>int(fs))tail=std::max(tail,std::abs(y));}check(tail<1e-7,"lost lock fades oscillator and filter tails to silence");c.gate=1;
+ }
+ {micro::HarmonicFM a,b;a.prepare(192000);b.prepare(1536000);a.set(100,100,3);b.set(100,100,3);micro::FMControl ctl{400,1,{.5,.5}};double e=0,energy=0;int n=0;for(int i=0;i<96000;++i){double x=a.sample(ctl)[0],y=0;for(int j=0;j<8;++j)y=b.sample(ctl)[0];if(i>48000){e+=(x-y)*(x-y);energy+=y*y;++n;}}std::cout<<"FM max-pitch/depth high-rate reference residual "<<10*std::log10(e/energy)<<" dB relative\n";check(std::sqrt(e/n)<.003,"maximum FM settings remain close to higher-rate reference");}
+ for(int kind:{0,1,2}){micro::HarmonicFM v;v.prepare(fs);v.set(kind==0?0:80,kind==1?0:70,1);auto ctl=c;if(kind==2)ctl.envelope={0,0};double peak=0;for(int i=0;i<10000;++i)peak=std::max(peak,std::abs(v.sample(ctl)[0]));check(peak==0,"Amount zero, Depth zero and silent input generate no sine carrier");}
 }
-int main(){detectorTests();std::cout<<checks<<" FM checks, "<<failures<<" failures\n";return failures?1:0;}
+}
+int main(){detectorTests();voiceTests();std::cout<<checks<<" FM checks, "<<failures<<" failures\n";return failures?1:0;}
