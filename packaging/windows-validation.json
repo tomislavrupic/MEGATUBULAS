@@ -1,9 +1,9 @@
 {
-  "testsPassed": true,
-  "run": "37619284751",
-  "commit": "1223384a3433b2e18289903ae97194d226468cb7",
-  "sha256": "651b61488c929738405d5a21809c588f99dac5306cce08e2530eb75e6a619681",
+  "version": "0.3.0",
+  "run": "37634169207",
+  "sha256": "4326e486c9af9c17cac0949103d2246cc2ffa4aceff723bda74f00a1f8481308",
   "pluginval": "1.0.4 strictness 5",
-  "version": "0.2.1",
-  "platform": "Windows-x64"
+  "platform": "Windows-x64",
+  "commit": "7c1f6b0899ab127567a1615ec3b09368f146cfbd",
+  "testsPassed": true
 }

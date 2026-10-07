@@ -1,23 +1,23 @@
 {
-  "version": "0.2.1",
+  "version": "0.3.0",
   "downloads": {
     "mac": {
       "status": "ready",
-      "url": "https://github.com/tomislavrupic/MEGATUBULAS/releases/download/v0.2.1/MEGATUBULAS-0.2.1-macOS-arm64.zip",
-      "bytes": 123516315,
-      "sha256": "7c98e0d2c4ffb160cfab78bd8024193b3b0bf47199f15f3e6ba17d2cc19d02ae"
+      "url": "https://github.com/tomislavrupic/MEGATUBULAS/releases/download/v0.3.0/MEGATUBULAS-0.3.0-macOS-arm64.zip",
+      "bytes": 123392272,
+      "sha256": "785bdeff1241f6d581e0befe025b92d4f9d197464ea0dc69134adbdce6e87536"
     },
     "source": {
       "status": "ready",
-      "url": "https://github.com/tomislavrupic/MEGATUBULAS/releases/download/v0.2.1/MEGATUBULAS-0.2.1-source.zip",
-      "bytes": 79116019,
-      "sha256": "c5dadc2f9f32c8056d3c6717126632b9050b0f735090e8b8a1aedfd15dac68c4"
+      "url": "https://github.com/tomislavrupic/MEGATUBULAS/releases/download/v0.3.0/MEGATUBULAS-0.3.0-source.zip",
+      "bytes": 87903604,
+      "sha256": "ffcb6f17d46448321e0729d49d820d7e5bbabbcca4032e0c19cb401a6ad0e530"
     },
     "windows": {
       "status": "ready",
-      "url": "https://github.com/tomislavrupic/MEGATUBULAS/releases/download/v0.2.1/MEGATUBULAS-0.2.1-Windows-x64.zip",
-      "bytes": 79100253,
-      "sha256": "651b61488c929738405d5a21809c588f99dac5306cce08e2530eb75e6a619681"
+      "url": "https://github.com/tomislavrupic/MEGATUBULAS/releases/download/v0.3.0/MEGATUBULAS-0.3.0-Windows-x64.zip",
+      "bytes": 79026697,
+      "sha256": "4326e486c9af9c17cac0949103d2246cc2ffa4aceff723bda74f00a1f8481308"
     }
   }
 }

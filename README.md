@@ -6,7 +6,7 @@ Experimental original stateful saturation effect. Three causal saturating stages
 
 The project directory retains its original MICROTUBULAS name for asset lineage. The plugin, bundles and UI are now MEGATUBULAS. Parameter IDs, the schema-1 `MICROTUBULAS` state root, and the AU/VST3 manufacturer/plugin codes remain unchanged. Version 0.2.1 intentionally strengthens Memory/Coupling: saved sessions load the same parameter values but their sound changes with the revised engine. The installer backs up the previous binary.
 
-## Harmonic FM experiment (v0.3.0 candidate)
+## Harmonic FM experiment (v0.3.0)
 
 Version 0.3 adds an optional pitch-following FM voice before saturation. Memory sits in the left lattice, Drive in the centre, and FM Amount in the right. The small 1x/2x/3x harmonic ratio picker sits beside FM; Depth is in Advanced and defaults to 66%; the main interface shows tracking status and detected frequency. It targets single bass notes from 25–400 Hz, with continuous bends and a measured acquisition delay. Amount or Depth zero silences the entire layer. Existing presets and older sessions start with FM off. Version 0.3.0 is the experimental FM release; v0.2.1 is retained as the previous release archive. See [FM validation](docs/HARMONIC_FM_VALIDATION.md).
 
@@ -37,7 +37,7 @@ cmake --build build-win --config Release --target Megatubulas_VST3 Megatubulas_S
 ctest --test-dir build-win -C Release --output-on-failure
 ```
 
-Download v0.3 Mac AU/VST3/standalone, Windows x64 VST3/standalone and full corresponding source from [the landing page](https://tomislavrupic.github.io/MEGATUBULAS/) or [release v0.3.0](https://github.com/tomislavrupic/MEGATUBULAS/releases/tag/v0.3.0). [Native Windows CI](https://github.com/tomislavrupic/MEGATUBULAS/actions/runs/37619284751) passed 345 numerical checks, 118 processor integration checks and pluginval 1.0.4 strictness 5. Windows binaries are unsigned. Intel Mac / universal binaries are unverified.
+Download v0.3 Mac AU/VST3/standalone, Windows x64 VST3/standalone and full corresponding source from [the landing page](https://tomislavrupic.github.io/MEGATUBULAS/) or [release v0.3.0](https://github.com/tomislavrupic/MEGATUBULAS/releases/tag/v0.3.0). Current release evidence is in [FM validation](docs/HARMONIC_FM_VALIDATION.md); the previous v0.2.1 CI result is retained with that release. Windows binaries are unsigned. Intel Mac / universal binaries are unverified.
 
 ## Install on macOS
 
@@ -59,6 +59,7 @@ Three asymmetrical saturating stages generate harmonics from the signal. Candida
 - **Drive:** amount of saturation. Zero is linear apart from deliberate EQ/conditioning and the resampling filters. Version 0.2.0 uses exponential stage drive with partial gain compensation, so quiet input also develops harmonics at higher settings. Drive adds input-dependent gain: use Match or Output for level comparisons.
 - **Memory:** version 0.2.1 adds a fast 3 ms envelope attack, 12 ms–2.4 s nominal release (logarithmic), and increasing sag depth. Low values recover quickly; high values let a loud note reshape quieter notes that follow, then bloom back as the histories discharge. Higher values also increase bias memory.
 - **Coupling:** version 0.2.1 gives a stronger upstream envelope influence on later drive/bias plus a bounded, 700 Hz filtered feed-forward path from the earlier stages. High values add weight and a denser harmonic texture. All reads use previous-sample state; no feedback loop.
+- **FM:** optional synthesized harmonic voice that follows single bass notes (25–400 Hz) before saturation. Amount zero is off. The main 1x/2x/3x picker selects the integer modulation ratio; Advanced Depth defaults to 66%, with zero silencing the whole FM layer. Allow about 110 ms for measured periodic note acquisition; chords and full mixes are outside this experiment.
 - **Blend:** linear dry/wet crossfade, with dry delayed by measured conversion latency. **Output** trims the final mix. Advanced **Wet level** changes only the processed path.
 - Four post-distortion EQ bands: 100 Hz low shelf, 500 Hz bell, 1.5 kHz bell, 5 kHz high shelf; ±12 dB. Advanced bass/treble conditioning changes what reaches saturation (−4/0/+4 dB shelves).
 - **Warm / Tense / Open:** original curvature/asymmetry/coupling mappings, documented in `docs/DSP_DESIGN.md`.

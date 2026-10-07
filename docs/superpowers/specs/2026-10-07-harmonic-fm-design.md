@@ -55,12 +55,12 @@ Advance `phi` continuously from the smoothed tracked frequency. Carrier/modulato
 
 ## Controls and interface
 
-User steering (2026-10-07): place Memory inside the left animation structure, Drive in the central structure, and FM Amount inside the right structure. Retain the large lattice around the controls. Move the remaining top-row controls into an evenly spaced Coupling / Blend / Output row. Add a clearly labelled **HARMONIC FM · EXPERIMENTAL** section for Depth, Ratio and tracking status in the expanded panel:
+User steering (2026-10-07): place Memory inside the left animation structure, Drive in the central structure, and FM Amount inside the right structure. Retain the large lattice around the controls. Move the remaining top-row controls into an evenly spaced Coupling / Blend / Output row. Add a clearly labelled **HARMONIC FM · EXPERIMENTAL** section for Depth in the expanded panel, with Ratio beside FM and tracking status below it on the main interface:
 
 | Permanent ID | Display | Range / choices | Default |
 | --- | --- | --- | --- |
 | `fmAmount` | FM Amount | 0–100% | 0% (off) |
-| `fmDepth` | FM Depth | 0–100% | 25% |
+| `fmDepth` | FM Depth | 0–100% | 66% |
 | `fmRatio` | Harmonic Ratio | 1× / 2× / 3× | 1× |
 
 Show detected note and Hz with `OFF`, `LISTENING`, `LOCKED` or `RELEASING`. Uncertain estimates must not be displayed as confidently locked. Telemetry is bounded atomic data, never a UI callback from the audio thread. Sliders support the current numeric entry, reset, keyboard and automation behavior. Label the section for monophonic bass; no extra tuning, MIDI input or chord mode in this version.
