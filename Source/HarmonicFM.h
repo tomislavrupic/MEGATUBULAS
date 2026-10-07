@@ -41,5 +41,10 @@ public:
   }return out;
  }
  double gate() const noexcept {return lockGain;}
+ bool active() const noexcept {
+  if(targetAmount>0&&targetDepth>0||amount>1e-9&&depth>1e-9)return true;
+  for(size_t c=0;c<2;++c)if(std::abs(dcX[c])+std::abs(dcY[c])+std::abs(z1[c])+std::abs(z2[c])>1e-12)return true;
+  return false;
+ }
 };
 }

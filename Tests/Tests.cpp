@@ -21,6 +21,20 @@ double shapeDifference(const std::vector<float>& a,const std::vector<float>& b,s
  return std::sqrt(residual/std::max(aa,1.e-30));
 }
 int main(int argc,char** argv){
+ // FM controls follow sample time, including a note change inside arbitrary host blocks.
+ for(double fs:{44100.,48000.,96000.})for(int factor:{4,8}){
+  std::vector<float> input(size_t(fs*.65));double phase=0;
+  for(size_t i=0;i<input.size();++i){double hz=i<size_t(fs*.313)?55.:82.4069;phase+=2*micro::pi*hz/fs;input[i]=float(.25*(std::sin(phase)+.2*std::sin(2*phase)));}
+  micro::Parameters p;p.drive=20;p.fmAmount=100;p.fmDepth=70;p.fmRatio=1;
+  auto fm=render(fs,127,factor,p,input);p.fmAmount=0;auto legacy=render(fs,127,factor,p,input);
+  check(shapeDifference(legacy,fm,size_t(fs*.15))>.005,"enabled FM adds harmonic texture beyond a constant gain");
+  p.fmAmount=100;p.fmDepth=0;auto noDepth=render(fs,17,factor,p,input);check(rmsDiff(legacy,noDepth)<1e-7,"zero FM Depth retains original pipeline audio");
+  p.fmDepth=70;for(int block:{1,17,512,4096}){auto partition=render(fs,block,factor,p,input);check(rmsDiff(fm,partition)<2e-6,"FM pitch decisions and audio are causal across host partitions");}
+  auto reset=render(fs,127,factor,p,input);check(fm==reset,"FM reset/replay deterministic");
+  std::vector<float> silence(size_t(fs*.3));auto quiet=render(fs,127,factor,p,silence);check(std::all_of(quiet.begin(),quiet.end(),[](float v){return std::abs(v)<1e-8f;}),"FM enabled silence never generates a sine tone");
+  p.blend=0;auto dryFM=render(fs,127,factor,p,input);p.fmAmount=0;auto dryLegacy=render(fs,127,factor,p,input);check(dryFM==dryLegacy,"FM leaves Blend-zero dry path unchanged");
+ }
+ {micro::Parameters p;p.fmAmount=100;p.fmDepth=100;p.drive=50;micro::Pipeline pipe;pipe.set(p);pipe.prepare(48000,127,2,4);std::array<float,127> l{},r{};double phase=0;bool finite=true;for(int block=0;block<700;++block){for(int i=0;i<127;++i){phase+=2*micro::pi*55/48000;double x=block<250?.3*std::sin(phase):0;l[size_t(i)]=float(x);r[size_t(i)]=float(-x);}float* ptr[]={l.data(),r.data()};pipe.process(ptr,127);for(float x:l)finite&=std::isfinite(x);if(block==200)check(pipe.pitchEstimate().locked&&std::abs(pipe.pitchEstimate().hz-55)<.5,"FM pipeline detects anti-phase stereo bass");}double tail=0;for(float x:l)tail=std::max(tail,std::abs(double(x)));check(finite&&tail<1e-6&&!pipe.pitchEstimate().locked,"FM pipeline settles after note release without autonomous tail");}
  check(micro::animationFrame(0,0)==0&&micro::animationFrame(0,1)==7.5f&&micro::animationFrame(0,2)==0,"one source-second forward / back animation window");
  check(micro::animationFrame(1,0)==22.5f&&micro::animationFrame(1,1)==30&&micro::animationFrame(.5f,1,false)==11.25f,"Drive chooses animation start / reduced motion");
 

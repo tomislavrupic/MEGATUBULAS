@@ -13,6 +13,7 @@ struct Parameters {
  double wetLevel=0;int preLow=1,preHigh=1;
  std::array<double,4> eq{}; double variation=0; int mode=0;
  bool freeze=false, bypass=false, ablate=false;
+ double fmAmount=0,fmDepth=25;int fmRatio=0;
 };
 struct EntropyConfig {
  enum Kind { seeded, imported, replay }; int kind=seeded;

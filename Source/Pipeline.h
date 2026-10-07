@@ -1,5 +1,7 @@
 #pragma once
 #include "Core.h"
+#include "PitchTracker.h"
+#include "HarmonicFM.h"
 #include <juce_dsp/juce_dsp.h>
 namespace micro {
 class Pipeline {
@@ -14,6 +16,8 @@ class Pipeline {
  int channels=2,capacity=1024,latency=0,write=0,quality=4;
  uint64_t eqClock=0,matchSamples=0;double dryEnergy=0,wetEnergy=0;bool matching=false;
  Parameters p;
+ PitchTracker tracker;HarmonicFM fm;std::vector<FMControl> fmTimeline;
+ PitchEstimate lastPitch{};FMControl previousFM{};bool tracking=false;
 public:
  Engine engine;
  float inputPeak=0,outputPeak=0;double heldMatchDb=0;int matchStatus=0;
@@ -22,12 +26,14 @@ public:
   oversampler=std::make_unique<juce::dsp::Oversampling<float>>(size_t(ch),factor==8?3:2,juce::dsp::Oversampling<float>::filterHalfBandFIREquiripple,true,true);
   oversampler->initProcessing(size_t(capacity));latency=int(std::lround(oversampler->getLatencyInSamples()));
   jassert(latency<int(delay[0].size()));wet.setSize(ch,capacity);dryBuffer.setSize(ch,capacity);smoothing=std::exp(-1/(.02*rate));
+  fmTimeline.resize(size_t(capacity));tracker.prepare(rate,ch);fm.prepare(rate*factor);
   engine.prepare(rate*factor);reset();
  }
  void configure(const EntropyConfig& c) noexcept {savedMatchOffset=c.matchOffset;engine.configure(c);reset();}
- void set(const Parameters& value) noexcept {p=value;engine.set(p);}
+ void set(const Parameters& value) noexcept {p=value;engine.set(p);fm.set(p.fmAmount,p.fmDepth,std::clamp(p.fmRatio,0,2)+1);}
  void reset() noexcept {
   if(oversampler)oversampler->reset();engine.reset();delay={};write=0;eqClock=0;eq=p.eq;
+  tracker.reset();fm.reset();lastPitch={};previousFM={};tracking=false;
   for(auto& ch:filters)for(int b=0;b<4;++b){ch[b].reset();ch[b].c=Biquad::coefficients(b,eq[b],fs);}
   characterDb=characterTone();for(auto& ch:characterFilters)for(int b=0;b<2;++b){ch[b].reset();ch[b].c=Biquad::coefficients(b==0?0:3,characterDb[size_t(b)],fs);}
   inGain=gain(p.input);outGain=gain(p.output);blend=p.blend/100.;bypass=p.bypass?1:0;inputPeak=outputPeak=0;
@@ -35,6 +41,9 @@ public:
   matchSamples=0;matching=false;matchGain=matchTarget=gain(savedMatchOffset);heldMatchDb=savedMatchOffset;matchStatus=0;
  }
  int getLatency() const noexcept {return latency;}int getQuality() const noexcept {return quality;}
+ PitchEstimate pitchEstimate() const noexcept {return lastPitch;}
+ double fmGate() const noexcept {return fm.gate();}
+ bool fmEnabled() const noexcept {return p.fmAmount>0&&p.fmDepth>0;}
  std::array<double,2> characterTone() const noexcept {
   const auto mode=size_t(std::clamp(p.mode,0,2));const double amount=std::clamp(p.drive/100.,0.,1.);
   return {std::array{2.,1.5,.75}[mode]*amount,std::array{-10.,-8.,-6.}[mode]*amount};
@@ -45,13 +54,27 @@ public:
   if(!oversampler)return;
   inputPeak=outputPeak=0;
   for(int offset=0;offset<count;offset+=capacity){int n=std::min(capacity,count-offset);
+   const bool wantsFM=fmEnabled();
+   if(wantsFM&&!tracking){tracker.reset();fm.reset();lastPitch={};previousFM={};tracking=true;}
+   else if(!wantsFM&&tracking){tracker.reset();tracking=false;lastPitch.locked=false;lastPitch.confidence=0;}
    for(int i=0;i<n;++i){preLow=smoothing*preLow+(1-smoothing)*(p.preLow-1)*4.;preHigh=smoothing*preHigh+(1-smoothing)*(p.preHigh-1)*4.;
     if(preClock++%32==0)for(auto& ch:preFilters)for(int b=0;b<2;++b)ch[b].c=Biquad::coefficients(b==0?0:3,b==0?preLow:preHigh,fs);
     inGain=smoothing*inGain+(1-smoothing)*gain(p.input);
     for(int c=0;c<channels;++c){float v=float(finite(data[c][offset+i])*inGain);dryBuffer.setSample(c,i,v);double shaped=v;for(auto& f:preFilters[c])shaped=f.process(shaped);wet.setSample(c,i,float(shaped));inputPeak=std::max(inputPeak,std::abs(v));}
+    if(tracking)lastPitch=tracker.process(dryBuffer.getSample(0,i),dryBuffer.getSample(channels==1?0:1,i));
+    fmTimeline[size_t(i)]={lastPitch.hz,lastPitch.locked?1.:0.,lastPitch.envelope};
    }
    auto block=juce::dsp::AudioBlock<float>(wet).getSubBlock(0,size_t(n));auto up=oversampler->processSamplesUp(block);
-   for(size_t i=0;i<up.getNumSamples();++i){double frame[2]{};for(int c=0;c<channels;++c)frame[c]=up.getSample(size_t(c),i);engine.sample(frame,channels);for(int c=0;c<channels;++c)up.setSample(size_t(c),i,float(frame[c]));}
+   for(size_t i=0;i<up.getNumSamples();++i){double frame[2]{};for(int c=0;c<channels;++c)frame[c]=up.getSample(size_t(c),i);
+    const size_t native=i/size_t(quality);const auto& control=fmTimeline[native];
+    if(fm.active()){
+     const double fraction=double(i%size_t(quality)+1)/quality;FMControl interpolated=control;
+     // Both endpoints are available at this native sample; never use a future timeline entry.
+     for(size_t c=0;c<2;++c)interpolated.envelope[c]=previousFM.envelope[c]+fraction*(control.envelope[c]-previousFM.envelope[c]);
+     const auto addition=fm.sample(interpolated);for(int c=0;c<channels;++c)frame[c]+=addition[size_t(c)];
+    }
+    if(i%size_t(quality)==size_t(quality-1))previousFM=control;
+    engine.sample(frame,channels);for(int c=0;c<channels;++c)up.setSample(size_t(c),i,float(frame[c]));}
    oversampler->processSamplesDown(block);
    const auto toneTarget=characterTone();
    for(int i=0;i<n;++i){
