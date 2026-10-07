@@ -21,6 +21,7 @@ double shapeDifference(const std::vector<float>& a,const std::vector<float>& b,s
  return std::sqrt(residual/std::max(aa,1.e-30));
 }
 int main(int argc,char** argv){
+ std::cout<<std::unitbuf;
  // FM controls follow sample time, including a note change inside arbitrary host blocks.
  for(double fs:{44100.,48000.,96000.})for(int factor:{4,8}){
   std::vector<float> input(size_t(fs*.65));double phase=0;
