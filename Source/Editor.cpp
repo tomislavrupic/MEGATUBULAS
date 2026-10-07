@@ -130,7 +130,7 @@ MicroEditor::MicroEditor(MicroProcessor& p):AudioProcessorEditor(p),processor(p)
  preLowLink=std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,"preLow",preLow);preHighLink=std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,"preHigh",preHigh);
  mode.addItemList({"WARM","TENSE","OPEN"},1);quality.addItemList({"4x FIR","8x FIR"},1);preset.addItemList({"Bass Foundation","Synth Amber","Drum Tension","Gentle Mix Colour","Fractal Motion"},1);preset.setText("STARTING POINTS",juce::dontSendNotification);preset.onChange=[this]{if(preset.getSelectedItemIndex()>=0)processor.setCurrentProgram(preset.getSelectedItemIndex());};
  modeLink=std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,"mode",mode);qualityLink=std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,"quality",quality);
- fmRatio.addItemList({"FM RATIO: 1x","FM RATIO: 2x","FM RATIO: 3x"},1);fmRatio.setTooltip("Integer harmonic modulation ratio: 1, 2 or 3 times the detected bass frequency.");fmRatioLink=std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,"fmRatio",fmRatio);
+ fmRatio.addItemList({"1x","2x","3x"},1);fmRatio.setTitle("FM Ratio");fmRatio.setTooltip("Integer harmonic modulation ratio: 1, 2 or 3 times the detected bass frequency.");fmRatioLink=std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,"fmRatio",fmRatio);
  for(auto* c:{&mode,&quality,&preset,&source,&preLow,&preHigh,&fmRatio}){addAndMakeVisible(c);c->setWantsKeyboardFocus(true);}
  source.addItemList({"Seeded PRNG","Imported entropy","Saved sequence"},1);source.setSelectedId(p.entropyConfig().kind+1,juce::dontSendNotification);source.onChange=[this]{auto c=processor.entropyConfig();c.kind=source.getSelectedId()-1;if(!processor.setEntropy(c)){detail.setText("Import a non-empty sequence first (or queue busy).",juce::dontSendNotification);source.setSelectedId(processor.entropyConfig().kind+1,juce::dontSendNotification);}};
  for(auto* b:{&freeze,&bypass,&match,&explore,&resetButton,&advanced,&importButton,&seedButton}){addAndMakeVisible(b);b->setWantsKeyboardFocus(true);}
@@ -160,14 +160,14 @@ void MicroEditor::resized(){float sx=std::min(getWidth()/1320.f,getHeight()/(exp
  for(int i=2;i<5;++i){float x=350.f+float(i-2)*310.f;bounds(knobs[size_t(i)],x-82.5f,96,165,170);bounds(labels[size_t(i)],x-100,265,200,24);}
  bounds(knobs[1],315,355,150,175);bounds(labels[1],300,535,180,24);
  bounds(knobs[0],570,341,180,190);bounds(labels[0],560,535,200,24);
- bounds(knobs[12],860,355,150,175);bounds(labels[12],845,535,180,24);bounds(fmStatus,820,558,230,18);
+ bounds(knobs[12],860,355,150,175);bounds(labels[12],845,535,120,24);bounds(fmRatio,972,535,68,24);bounds(fmStatus,820,558,230,18);
  for(int i=5;i<10;++i){float x=i==9?850.f:140.f+(i-5)*175.f;bounds(knobs[size_t(i)],x-60,605,120,110);bounds(labels[size_t(i)],x-82,718,164,20);}
  bounds(mode,1020,628,200,34);bounds(preset,985,687,260,30);
  bounds(quality,445,770,110,32);bounds(match,575,770,120,32);bounds(bypass,715,770,120,32);bounds(freeze,855,770,110,32);bounds(explore,985,770,110,32);bounds(resetButton,1115,770,105,32);
  bounds(status,80,820,1000,20);bounds(advanced,1050,816,200,24);
- bool visible=expanded;for(auto* c:std::array<juce::Component*,17>{&knobs[10],&labels[10],&knobs[11],&labels[11],&preLow,&preHigh,&source,&seed,&seedButton,&importButton,&motion,&ablate,&detail,&knobs[13],&labels[13],&fmRatio,&fmHelp})c->setVisible(visible);
+ bool visible=expanded;for(auto* c:std::array<juce::Component*,16>{&knobs[10],&labels[10],&knobs[11],&labels[11],&preLow,&preHigh,&source,&seed,&seedButton,&importButton,&motion,&ablate,&detail,&knobs[13],&labels[13],&fmHelp})c->setVisible(visible);
  bounds(knobs[10],65,895,120,100);bounds(labels[10],65,995,120,18);bounds(knobs[11],185,895,120,100);bounds(labels[11],185,995,120,18);bounds(preLow,345,954,200,30);bounds(preHigh,565,954,200,30);bounds(source,345,906,200,30);bounds(seed,565,906,100,30);bounds(seedButton,680,906,90,30);bounds(importButton,785,906,145,30);bounds(motion,960,904,250,26);bounds(ablate,960,943,310,26);bounds(detail,345,995,800,45);
- bounds(knobs[13],95,1075,135,110);bounds(labels[13],75,1190,175,20);bounds(fmRatio,330,1110,200,34);bounds(fmHelp,585,1070,620,125);
+ bounds(knobs[13],95,1075,135,110);bounds(labels[13],75,1190,175,20);bounds(fmHelp,585,1070,620,125);
 }
 void MicroEditor::drawFrame(juce::Graphics& g){float h=expanded?1230.f:880.f;
  // One 3:2 plate, one uniform scale: never stretch individual material strips.

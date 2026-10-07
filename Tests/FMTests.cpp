@@ -24,8 +24,8 @@ void detectorTests(){
   check(!e.locked&&std::isfinite(e.hz)&&e.envelope[0]<1e-4,"silence and invalid samples release tracking");
  }
  {micro::PitchTracker t;t.prepare(48000,2);micro::PitchEstimate e{};double phase=0;int bad=0,good=0;
-  for(int i=0;i<72000;++i){double hz=i<24000?55.:i<48000?110.:110.+20.*(i-48000)/24000.;phase+=2*micro::pi*hz/48000;double x=.3*bass(phase,1);e=t.process(i<36000?x:x*.1,i<36000?x*.1:-x);if(i>30000&&i<35000){bad+=e.locked&&cents(e.hz,110)>20;good+=e.locked;}if(i>60000)bad+=e.locked&&cents(e.hz,hz)>80;}
-  check(good>4000&&bad==0,"octave change, channel switch and bend avoid wrong stable locks");check(e.locked&&cents(e.hz,130)<80,"continuous bend is followed without semitone quantization");
+  for(int i=0;i<72000;++i){double hz=i<24000?55.:i<48000?110.:110.+20.*(i-48000)/24000.;phase+=2*micro::pi*hz/48000;double x=.3*bass(phase,1);e=t.process(i<36000?x:x*.1,i<36000?x*.1:-x);if(i>30000&&i<48000){bad+=e.locked&&cents(e.hz,110)>20;good+=e.locked;}if(i>60000)bad+=e.locked&&cents(e.hz,hz)>80;}
+  check(good>14000&&bad==0,"octave change, channel switch and bend avoid wrong stable locks");check(e.locked&&cents(e.hz,130)<80,"continuous bend is followed without semitone quantization");
   t.reset();check(!t.process(0,0).locked,"reset clears note lock");
  }
 }

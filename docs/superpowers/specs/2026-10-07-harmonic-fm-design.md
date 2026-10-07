@@ -95,3 +95,5 @@ Write failing behavioral tests before product code. Keep test fixtures synthetic
 - [Carnegie Mellon, FM synthesis](https://www.cs.cmu.edu/~music/icm-online/readings/fm-synthesis/): sideband frequencies, harmonic ratios and modulation index.
 
 The experimental layer synthesizes sound controlled by the input. It does not directly frequency-modulate the recorded waveform. Tracking confidence, octave ambiguity, acquisition time, spectral behavior and audible usefulness must be assessed separately. No implementation, build, install or deployment is established by this design document.
+
+User revision (2026-10-07): FM ratio picker remains visible beside FM on the main interface. FM Depth defaults/reset/presets/legacy missing-field migration now use 66%; Amount still defaults to zero.

@@ -8,7 +8,7 @@ The project directory retains its original MICROTUBULAS name for asset lineage. 
 
 ## Harmonic FM experiment (v0.3.0 candidate)
 
-The isolated `codex/harmonic-fm` branch adds an optional pitch-following FM voice before saturation. Memory sits in the left lattice, Drive in the centre, and FM Amount in the right. Depth and the 1x/2x/3x harmonic ratio are in Advanced; the main interface shows tracking status and detected frequency. It targets single bass notes from 25–400 Hz, with continuous bends and a measured acquisition delay. Amount or Depth zero silences the entire layer. Existing presets and older sessions start with FM off. Version 0.3.0 is the experimental FM release; v0.2.1 is retained as the previous release archive. See [FM validation](docs/HARMONIC_FM_VALIDATION.md).
+Version 0.3 adds an optional pitch-following FM voice before saturation. Memory sits in the left lattice, Drive in the centre, and FM Amount in the right. The small 1x/2x/3x harmonic ratio picker sits beside FM; Depth is in Advanced and defaults to 66%; the main interface shows tracking status and detected frequency. It targets single bass notes from 25–400 Hz, with continuous bends and a measured acquisition delay. Amount or Depth zero silences the entire layer. Existing presets and older sessions start with FM off. Version 0.3.0 is the experimental FM release; v0.2.1 is retained as the previous release archive. See [FM validation](docs/HARMONIC_FM_VALIDATION.md).
 
 ## Local build
 
@@ -37,7 +37,7 @@ cmake --build build-win --config Release --target Megatubulas_VST3 Megatubulas_S
 ctest --test-dir build-win -C Release --output-on-failure
 ```
 
-Download Mac AU/VST3/standalone, Windows x64 VST3/standalone and full corresponding source from [the landing page](https://tomislavrupic.github.io/MEGATUBULAS/) or [release v0.2.1](https://github.com/tomislavrupic/MEGATUBULAS/releases/tag/v0.2.1). [Native Windows CI](https://github.com/tomislavrupic/MEGATUBULAS/actions/runs/37619284751) passed 345 numerical checks, 118 processor integration checks and pluginval 1.0.4 strictness 5. Windows binaries are unsigned. Intel Mac / universal binaries are unverified.
+Download v0.3 Mac AU/VST3/standalone, Windows x64 VST3/standalone and full corresponding source from [the landing page](https://tomislavrupic.github.io/MEGATUBULAS/) or [release v0.3.0](https://github.com/tomislavrupic/MEGATUBULAS/releases/tag/v0.3.0). [Native Windows CI](https://github.com/tomislavrupic/MEGATUBULAS/actions/runs/37619284751) passed 345 numerical checks, 118 processor integration checks and pluginval 1.0.4 strictness 5. Windows binaries are unsigned. Intel Mac / universal binaries are unverified.
 
 ## Install on macOS
 

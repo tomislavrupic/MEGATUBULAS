@@ -5,7 +5,7 @@ struct FMControl {double hz=0,gate=0;std::array<double,2> envelope{};};
 // A pitch-controlled synthesis layer, not modulation of the recorded waveform.
 class HarmonicFM {
  double fs=192000,paramA=0,pitchA=0,gateAttack=0,gateRelease=0,dcA=0;
- double targetAmount=0,targetDepth=.25,amount=0,depth=0,phase=0,hz=0,lockGain=0;
+ double targetAmount=0,targetDepth=.66,amount=0,depth=0,phase=0,hz=0,lockGain=0;
  int ratio=1,remaining=0,rampLength=1;
  std::array<double,3> weights{1,0,0},weightStep{};
  std::array<double,2> dcX{},dcY{},z1{},z2{};

@@ -35,6 +35,38 @@ int main(int argc,char** argv){
   p.blend=0;auto dryFM=render(fs,127,factor,p,input);p.fmAmount=0;auto dryLegacy=render(fs,127,factor,p,input);check(dryFM==dryLegacy,"FM leaves Blend-zero dry path unchanged");
  }
  {micro::Parameters p;p.fmAmount=100;p.fmDepth=100;p.drive=50;micro::Pipeline pipe;pipe.set(p);pipe.prepare(48000,127,2,4);std::array<float,127> l{},r{};double phase=0;bool finite=true;for(int block=0;block<700;++block){for(int i=0;i<127;++i){phase+=2*micro::pi*55/48000;double x=block<250?.3*std::sin(phase):0;l[size_t(i)]=float(x);r[size_t(i)]=float(-x);}float* ptr[]={l.data(),r.data()};pipe.process(ptr,127);for(float x:l)finite&=std::isfinite(x);if(block==200)check(pipe.pitchEstimate().locked&&std::abs(pipe.pitchEstimate().hz-55)<.5,"FM pipeline detects anti-phase stereo bass");}double tail=0;for(float x:l)tail=std::max(tail,std::abs(double(x)));check(finite&&tail<1e-6&&!pipe.pitchEstimate().locked,"FM pipeline settles after note release without autonomous tail");}
+ // Rapid zero crossings must release/reacquire without truncating an audible FM voice.
+ for(bool depthToggle:{false,true})for(double hz:{25.,55.,110.}){
+  micro::Parameters p;p.drive=0;p.fmAmount=100;p.fmDepth=70;
+  micro::Pipeline pipe;pipe.set(p);pipe.prepare(48000,1,1,4);
+  float sample=0;float* data[]={&sample};double previous=0,maxStep=0;bool finite=true;
+  for(int i=0;i<48000;++i){
+   // Multiple phases of the settled voice; each off period is just 1 ms.
+   if(i>=16000&&i<40000&&(i-16000)%6000==0){if(depthToggle)p.fmDepth=0;else p.fmAmount=0;pipe.set(p);}
+   if(i>=16048&&i<40048&&(i-16048)%6000==0){p.fmAmount=100;p.fmDepth=70;pipe.set(p);}
+   sample=float(.5*std::sin(2*micro::pi*hz*i/48000));pipe.process(data,1);
+   if(i>15000){maxStep=std::max(maxStep,std::abs(double(sample)-previous));finite&=std::isfinite(sample);}
+   previous=sample;
+  }
+  std::cout<<"rapid FM toggle,"<<depthToggle<<','<<hz<<','<<maxStep<<'\n';
+  check(finite&&maxStep<.02,"rapid Amount/Depth zero crossing preserves smooth FM tail");
+ }
+ // Anti-phase bass switches the strongest channel smoothly; inspect the full handoff.
+ // A transient may move within the specified 50-cent continuity window; settled error stays <20.
+ {micro::Parameters p;p.drive=50;p.fmAmount=100;p.fmDepth=80;
+  micro::Pipeline pipe;pipe.set(p);pipe.prepare(48000,1,2,4);
+  float l=0,r=0;float* data[]={&l,&r};double previousL=0,previousR=0,maxStep=0,peak=0;int badLocks=0,goodLocks=0;bool finite=true;
+  for(int i=0;i<48000;++i){double cross=std::clamp((i-21600)/960.,0.,1.),x=std::sin(2*micro::pi*55*i/48000);
+   l=float((.3-.27*cross)*x);r=float(-(.03+.27*cross)*x);pipe.process(data,1);
+   if(i>=21000&&i<39000){auto e=pipe.pitchEstimate();badLocks+=e.locked&&std::abs(1200*std::log2(e.hz/55))>50;goodLocks+=e.locked;
+    peak=std::max({peak,std::abs(double(l)),std::abs(double(r))});maxStep=std::max({maxStep,std::abs(double(l)-previousL),std::abs(double(r)-previousR)});finite&=std::isfinite(l)&&std::isfinite(r);}
+   previousL=l;previousR=r;
+  }
+  std::cout<<"FM channel handoff,"<<goodLocks<<','<<badLocks<<','<<peak<<','<<maxStep<<'\n';
+  check(pipe.pitchEstimate().locked&&std::abs(1200*std::log2(pipe.pitchEstimate().hz/55))<20,"handoff returns to settled pitch within 20 cents");
+  check(goodLocks>12000&&badLocks==0,"stronger-channel handoff avoids wrong pitch throughout switch/recovery");
+  check(finite&&peak<.8&&maxStep<.03,"stronger anti-phase channel handoff produces no audio burst");
+ }
  check(micro::animationFrame(0,0)==0&&micro::animationFrame(0,1)==7.5f&&micro::animationFrame(0,2)==0,"one source-second forward / back animation window");
  check(micro::animationFrame(1,0)==22.5f&&micro::animationFrame(1,1)==30&&micro::animationFrame(.5f,1,false)==11.25f,"Drive chooses animation start / reduced motion");
 

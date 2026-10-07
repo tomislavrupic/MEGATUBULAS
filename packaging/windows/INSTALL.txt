@@ -1,4 +1,4 @@
-MEGATUBULAS 0.2.1 — Pixel Records
+MEGATUBULAS 0.3.0 — Pixel Records
 Windows x64. VST3 + standalone.
 
 Close your DAW. Copy the ENTIRE MEGATUBULAS.vst3 bundle/folder to:
@@ -6,7 +6,7 @@ Close your DAW. Copy the ENTIRE MEGATUBULAS.vst3 bundle/folder to:
 Create Pixel Records if necessary. Windows may ask for administrator approval.
 Keep a backup before replacing an earlier version. Do not copy only the inner
 binary; its bundle structure is required. Rescan your DAW and look for
-Pixel Records / MEGATUBULAS. Confirm v0.2.1 in the editor footer.
+Pixel Records / MEGATUBULAS. Confirm v0.3.0 in the editor footer.
 
 MEGATUBULAS.exe is the optional standalone application; it does not replace
 the VST3 in your DAW. AU plugins are macOS-only.

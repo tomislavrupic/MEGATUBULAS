@@ -53,7 +53,7 @@ public:
   attack=std::exp(-1/(.003*rate));release=std::exp(-1/(.08*rate));energyA=std::exp(-1/(.05*rate));
   for(auto& channel:filters){channel[0].prepare(rate,.5176380902050415);channel[1].prepare(rate,.7071067811865476);channel[2].prepare(rate,1.9318516525781366);}reset();
  }
- void reset() noexcept {for(auto& channel:filters)for(auto& f:channel)f.z1=f.z2=0;ring={};energy={};estimate={};candidateHz=0;decimationClock=write=filled=hopClock=selected=switchClock=streak=0;selectedInitially=false;jobLag=0;differenceSum=0;}
+ void reset(bool preserveEnvelope=false) noexcept {const auto envelope=estimate.envelope;for(auto& channel:filters)for(auto& f:channel)f.z1=f.z2=0;ring={};energy={};estimate={};candidateHz=0;decimationClock=write=filled=hopClock=selected=switchClock=streak=0;selectedInitially=false;jobLag=0;differenceSum=0;if(preserveEnvelope)estimate.envelope=envelope;}
  PitchEstimate process(double left,double right) noexcept {
   std::array<double,2> x{finite(left),finite(channels==1?left:right)};
   for(size_t c=0;c<2;++c){double amplitude=std::abs(x[c]),a=amplitude>estimate.envelope[c]?attack:release;estimate.envelope[c]=a*estimate.envelope[c]+(1-a)*amplitude;for(auto& f:filters[c])x[c]=f.sample(x[c]);energy[c]=energyA*energy[c]+(1-energyA)*x[c]*x[c];}

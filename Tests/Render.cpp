@@ -6,7 +6,7 @@
 #include <cerrno>
 int main(int argc,char** argv){
  if(argc<4){std::cerr<<"MegaRender input.wav output.wav dry|drive [mode 0..2] [match -20 dBFS RMS: 0|1] [memory 0..100] [coupling 0..100] [FM amount 0..100] [FM depth 0..100] [FM ratio index 0..2] [pitch.csv]\n";return 1;}
- double amount=0,depth=25,ratio=0;
+ double amount=0,depth=66,ratio=0;
  auto number=[&](int index,double maximum,double& value,bool integer=false){if(argc<=index)return true;char* end=nullptr;errno=0;double parsed=std::strtod(argv[index],&end);if(errno||end==argv[index]||*end||!std::isfinite(parsed)||parsed<0||parsed>maximum||(integer&&parsed!=std::floor(parsed)))return false;value=parsed;return true;};
  if(argc>12||!number(8,100,amount)||!number(9,100,depth)||!number(10,2,ratio,true)){std::cerr<<"Invalid FM arguments\n";return 1;}
  const juce::File input(juce::String::fromUTF8(argv[1])),output(juce::String::fromUTF8(argv[2]));

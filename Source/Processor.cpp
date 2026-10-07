@@ -19,7 +19,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout MicroProcessor::layout(){
  add("wetLevel","Wet level",-24,12,0,"dB");
  l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"preLow",1},"Bass into saturation",juce::StringArray{"Tight (-4 dB)","Flat","Full (+4 dB)"},1));
  l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"preHigh",1},"Treble into saturation",juce::StringArray{"Soft (-4 dB)","Flat","Bright (+4 dB)"},1));
- add("fmAmount","Experimental FM amount",0,100,0,"%");add("fmDepth","Experimental FM depth",0,100,25,"%");
+ add("fmAmount","Experimental FM amount",0,100,0,"%");add("fmDepth","Experimental FM depth",0,100,66,"%");
  l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"fmRatio",1},"Experimental FM ratio",juce::StringArray{"1x","2x","3x"},0));
  // Source is configuration, deliberately not an automatable parameter; reserved ID omitted.
  return l;

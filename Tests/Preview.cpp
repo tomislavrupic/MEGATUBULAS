@@ -21,7 +21,7 @@ public:
  const juce::String getApplicationName() override{return "MicroPreview";}const juce::String getApplicationVersion() override{return "0.2";}
  void initialise(const juce::String& args) override {
   audit=args.startsWith("--audit ");layout=args.startsWith("--layout ");const auto path=(audit?args.substring(8):layout?args.substring(9):args).unquoted();folder=path.isEmpty()?juce::File::getCurrentWorkingDirectory().getChildFile("Artwork/Layers"):juce::File(path);folder.createDirectory();
-  processor=std::make_unique<MicroProcessor>();processor->prepareToPlay(48000,127);if(layout){auto* a=processor->state.getParameter("fmAmount");a->setValueNotifyingHost(.8f);auto* depth=processor->state.getParameter("fmDepth");depth->setValueNotifyingHost(.7f);auto* drive=processor->state.getParameter("drive");drive->setValueNotifyingHost(.85f);}
+  processor=std::make_unique<MicroProcessor>();processor->prepareToPlay(48000,127);if(layout){auto* a=processor->state.getParameter("fmAmount");a->setValueNotifyingHost(.8f);auto* drive=processor->state.getParameter("drive");drive->setValueNotifyingHost(.85f);}
   if(!audit)for(int n=0;n<500;++n)signal(.5f,127);
   editor=std::make_unique<MicroEditor>(*processor);
   if(audit){brightness.reserve(180);startTimerHz(30);}else juce::Timer::callAfterDelay(500,[this]{editor->exportLayers(folder);if(layout){

@@ -1,4 +1,4 @@
-MEGATUBULAS 0.2.1 — Pixel Records
+MEGATUBULAS 0.3.0 — Pixel Records
 Apple Silicon (arm64), macOS 12 or later. AU + VST3 + standalone.
 
 Close your DAW before installing.
@@ -17,7 +17,7 @@ Then open:
   ~/Library/Audio/Plug-Ins/VST3
 Copy the entire MEGATUBULAS.vst3 bundle here (a Pixel Records subfolder is OK).
 
-Restart/rescan your DAW and look under Pixel Records. Check v0.2.1 in the
+Restart/rescan your DAW and look under Pixel Records. Check v0.3.0 in the
 editor footer. macOS does not use the Windows VST3 build, or vice versa.
 
 The standalone app is optional. Move it to your Applications folder to use

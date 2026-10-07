@@ -113,3 +113,5 @@ Recommended: **Native execution in this session**, followed by a fresh whole-cha
 ## Self-review
 
 Each spec section maps to Tasks 1–6. Pitch ambiguity/low-note delay, Depth-zero carrier leakage, block-causal controls, stereo cancellation, legacy-state migration, replay, output filtering, host automation, UI, listening and cross-platform evidence have named checks. Interfaces consistently use host ratio index 0–2 and voice integer ratio 1–3. No new dependency, MIDI/chord mode or unrelated engine redesign is introduced.
+
+User revision (2026-10-07): FM ratio picker remains visible beside FM on the main interface. FM Depth defaults/reset/presets/legacy missing-field migration now use 66%; Amount still defaults to zero.

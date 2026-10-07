@@ -1,7 +1,7 @@
 MEGATUBULAS — corresponding source
 
 This software is released under AGPL-3.0-only.
-Download MEGATUBULAS-0.2.1-source.zip beside the binary download on the
+Download MEGATUBULAS-0.3.0-source.zip beside the binary download on the
 MEGATUBULAS landing page. It includes the plugin's source, artwork needed to
 build it, build scripts, AGPL licence, and pinned JUCE source with its notices.
 

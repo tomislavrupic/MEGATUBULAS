@@ -17,13 +17,14 @@ public:
   if(hasFM){
    auto set=[](MicroProcessor& p,const char* id,float value){auto* parameter=p.state.getParameter(id);parameter->setValueNotifyingHost(parameter->convertTo0to1(value));};
    check(a.state.getRawParameterValue("fmAmount")->load()==0,"FM defaults off");
+   check(a.state.getRawParameterValue("fmDepth")->load()==66&&a.state.getParameter("fmDepth")->convertFrom0to1(a.state.getParameter("fmDepth")->getDefaultValue())==66,"FM Depth defaults and double-click reset to 66 percent");
    set(a,"fmAmount",80);set(a,"fmDepth",65);set(a,"fmRatio",2);process(a);juce::MemoryBlock fmState;a.getStateInformation(fmState);b.setStateInformation(fmState.getData(),int(fmState.getSize()));process(b);
    check(b.state.getRawParameterValue("fmAmount")->load()==80&&b.state.getRawParameterValue("fmDepth")->load()==65&&b.state.getRawParameterValue("fmRatio")->load()==2,"FM values survive session round trip");
    auto xml=juce::AudioProcessor::getXmlFromBinary(fmState.getData(),int(fmState.getSize()));auto old=juce::ValueTree::fromXml(*xml);
    for(int i=old.getNumChildren()-1;i>=0;--i)if(old.getChild(i)["id"].toString().startsWith("fm"))old.removeChild(i,nullptr);
    juce::MemoryBlock oldState;juce::AudioProcessor::copyXmlToBinary(*old.createXml(),oldState);b.setStateInformation(oldState.getData(),int(oldState.getSize()));process(b);
-   check(b.state.getRawParameterValue("fmAmount")->load()==0&&b.state.getRawParameterValue("fmDepth")->load()==25&&b.state.getRawParameterValue("fmRatio")->load()==0,"loading legacy state clears previously enabled FM and restores defaults");
-   for(int preset=0;preset<5;++preset){set(a,"fmAmount",100);set(a,"fmDepth",100);set(a,"fmRatio",2);a.setCurrentProgram(preset);process(a);check(a.state.getRawParameterValue("fmAmount")->load()==0&&a.state.getRawParameterValue("fmDepth")->load()==25&&a.state.getRawParameterValue("fmRatio")->load()==0,"existing presets explicitly reset all FM parameters");}
+   check(b.state.getRawParameterValue("fmAmount")->load()==0&&b.state.getRawParameterValue("fmDepth")->load()==66&&b.state.getRawParameterValue("fmRatio")->load()==0,"loading legacy state clears previously enabled FM and restores defaults");
+   for(int preset=0;preset<5;++preset){set(a,"fmAmount",100);set(a,"fmDepth",100);set(a,"fmRatio",2);a.setCurrentProgram(preset);process(a);check(a.state.getRawParameterValue("fmAmount")->load()==0&&a.state.getRawParameterValue("fmDepth")->load()==66&&a.state.getRawParameterValue("fmRatio")->load()==0,"existing presets explicitly reset all FM parameters");}
    for(int n=0;n<30;++n){set(a,"fmAmount",n%2?100:40);set(a,"fmRatio",float(n%3));set(a,"fmDepth",float((n*17)%101));process(a);}check(allocationCount==0,"FM automation causes no guarded callback allocation");
    // Lifecycle replay with a continuous single-note fixture; no device is opened.
    set(a,"fmAmount",90);set(a,"fmDepth",70);set(a,"fmRatio",1);set(a,"freeze",1);

@@ -55,8 +55,10 @@ public:
   inputPeak=outputPeak=0;
   for(int offset=0;offset<count;offset+=capacity){int n=std::min(capacity,count-offset);
    const bool wantsFM=fmEnabled();
-   if(wantsFM&&!tracking){tracker.reset();fm.reset();lastPitch={};previousFM={};tracking=true;}
-   else if(!wantsFM&&tracking){tracker.reset();tracking=false;lastPitch.locked=false;lastPitch.confidence=0;}
+   // Reacquire pitch without truncating the outgoing oscillator/filter fade.
+   // Retain detector envelope continuity across rapid zero-crossing automation.
+   if(wantsFM&&!tracking){tracker.reset(true);lastPitch.locked=false;lastPitch.confidence=0;tracking=true;}
+   else if(!wantsFM&&tracking){tracker.reset(true);tracking=false;lastPitch.locked=false;lastPitch.confidence=0;}
    for(int i=0;i<n;++i){preLow=smoothing*preLow+(1-smoothing)*(p.preLow-1)*4.;preHigh=smoothing*preHigh+(1-smoothing)*(p.preHigh-1)*4.;
     if(preClock++%32==0)for(auto& ch:preFilters)for(int b=0;b<2;++b)ch[b].c=Biquad::coefficients(b==0?0:3,b==0?preLow:preHigh,fs);
     inGain=smoothing*inGain+(1-smoothing)*gain(p.input);
