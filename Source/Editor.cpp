@@ -160,7 +160,7 @@ void MicroEditor::resized(){float sx=std::min(getWidth()/1320.f,getHeight()/(exp
  for(int i=2;i<5;++i){float x=350.f+float(i-2)*310.f;bounds(knobs[size_t(i)],x-82.5f,96,165,170);bounds(labels[size_t(i)],x-100,265,200,24);}
  bounds(knobs[1],315,355,150,175);bounds(labels[1],300,535,180,24);
  bounds(knobs[0],570,341,180,190);bounds(labels[0],560,535,200,24);
- bounds(knobs[12],860,355,150,175);bounds(labels[12],845,535,120,24);bounds(fmRatio,972,535,68,24);bounds(fmStatus,820,558,230,18);
+ bounds(knobs[12],860,355,150,175);bounds(labels[12],845,535,90,24);bounds(fmRatio,940,535,100,24);bounds(fmStatus,820,558,230,18);
  for(int i=5;i<10;++i){float x=i==9?850.f:140.f+(i-5)*175.f;bounds(knobs[size_t(i)],x-60,605,120,110);bounds(labels[size_t(i)],x-82,718,164,20);}
  bounds(mode,1020,628,200,34);bounds(preset,985,687,260,30);
  bounds(quality,445,770,110,32);bounds(match,575,770,120,32);bounds(bypass,715,770,120,32);bounds(freeze,855,770,110,32);bounds(explore,985,770,110,32);bounds(resetButton,1115,770,105,32);

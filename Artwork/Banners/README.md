@@ -9,3 +9,7 @@
 Prompt: `../Prompts/megatubulas-banner-v1.txt`.
 
 This is an illustrated product presentation; `../Layers/00-interface-preview.png` is the direct native interface capture. Generated artwork may alter tiny control lettering. No public release or platform certification is implied by the banner.
+
+## Harmonic FM v0.3
+
+`megatubulas-harmonic-fm-v030.png` is generated promotional artwork, edited with the approved native screenshot as a reference. Generated with the built-in imagegen tool on 2026-10-07; source output exec-f517cb5b-e894-443d-92f1-31c326f4d5be.png. It preserves the cinematic copper/gothic scene, updated control arrangement and illuminated grilles. The landing page presents the actual `interface-v030.png` separately; it is captured by MicroPreview, including the main FM ratio picker.
